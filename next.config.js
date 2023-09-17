@@ -1,4 +1,17 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+module.exports = {
+  reactStrictMode: true,
+  transpilePackages: ['ui'],
+  experimental: {
+    serverActions: true
+  },
+  images: {
+    domains: ['firebasestorage.googleapis.com']
+  },
+  webpack: (config, { defaultLoaders }) => {
+    // clear cache
+    defaultLoaders.babel.options.cache = false
 
-module.exports = nextConfig
+    return config
+  }
+}
