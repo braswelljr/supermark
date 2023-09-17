@@ -1,5 +1,3 @@
-import defaultConfig from '@carbazza/ui/tailwind.config'
-import { merge } from '@carbazza/utilaries'
 import { Config } from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
 import plugin from 'tailwindcss/plugin'
@@ -26,21 +24,10 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-jost)', ...defaultTheme.fontFamily.sans],
-        serif: ["'Lobster'", ...defaultTheme.fontFamily.serif],
-        mono: ['var(--font-zen-dots)', ...defaultTheme.fontFamily.mono]
+        serif: ['var(--font-satoshi)', ...defaultTheme.fontFamily.serif],
+        mono: ['var(--font-mono)', ...defaultTheme.fontFamily.mono]
       },
       colors: {
-        primary: {
-          100: '#ffe4d8',
-          200: '#ffd3be',
-          300: '#ffc1a5',
-          400: '#ffb08b',
-          500: '#ff8d58',
-          600: '#ff7c3f',
-          700: '#ff6a25',
-          800: '#ff590c',
-          900: '#f14c00'
-        },
         brown: {
           900: '#382519',
           800: '#462e20',
@@ -53,7 +40,45 @@ const config: Config = {
           100: '#c69b81',
           50: '#d9bcab',
           20: '#F3E8E2'
+        },
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))'
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))'
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))'
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))'
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))'
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))'
+        },
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))'
         }
+      },
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)'
       },
       fontSize: {
         xs: ['0.65rem', '0.75rem'],
@@ -110,7 +135,7 @@ const config: Config = {
 
           // loop through shades
           neonUtilities[`.neon-${color}`] = {
-            boxShadow: `0 0 5px ${first}, 0 0 10px ${last}`
+            boxShadow: `0 0 2px ${first}, 0 0 2px ${last}`
           }
         }
       }
@@ -120,6 +145,5 @@ const config: Config = {
     })
   ]
 }
-const mergedConfig = merge(defaultConfig, config)
 
-export default mergedConfig
+export default config

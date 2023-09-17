@@ -1,0 +1,21 @@
+{
+  "name": "supermark",
+  "short_name": "supermark",
+  "orientation": "portrait",
+  "start_url": ".",
+  "theme_color": "#ff7b00",
+  "background_color": "#ffffff00",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/vercel.svg",
+      "sizes": "1080x1080",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/vercel.svg",
+      "sizes": "1080x1080",
+      "type": "image/png"
+    }
+  ]
+}
