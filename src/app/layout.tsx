@@ -1,10 +1,12 @@
-import { ReactNode } from 'react'
-import localFont from 'next/font/local'
-import RootWrapper from '~/wrappers/root'
-import { siteConfig } from '~/config/site'
-import { cn } from '~/utils/classNames'
 import './globals.css'
+import { ReactNode } from 'react'
 import type { Metadata } from 'next'
+import localFont from 'next/font/local'
+import { ThemeProvider } from '~/providers/theme'
+import { siteConfig } from '~/config/site'
+import { Toaster } from '~/components/ui/toaster'
+import { AuthenticationProvider } from '~/context/useAuthentications'
+import { cn } from '~/utils/classNames'
 
 export const metadata: Metadata = {
   title: {
@@ -69,7 +71,10 @@ export default function Layout({ children }: { children: ReactNode }): React.JSX
     >
       <head />
       <body className="min-h-screen bg-white text-black dark:bg-neutral-900 dark:text-white">
-        <RootWrapper>{children}</RootWrapper>
+        <ThemeProvider>
+          <AuthenticationProvider>{children}</AuthenticationProvider>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   )

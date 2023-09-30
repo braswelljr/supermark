@@ -39,13 +39,20 @@ export function ThemeSwitch({ className, layoutId }: { className?: string; layou
           dark: <HiMoon className={cn('h-3 w-auto')} />,
           light: <HiSun className={cn('h-3 w-auto')} />
         }).map(([key, value], i, self) => (
-          <li key={key} className={cn('relative block cursor-pointer p-2')} onClick={() => setTheme(key)}>
+          <li
+            key={key}
+            className={cn(
+              'relative block cursor-pointer p-2 dark:text-white',
+              theme === key && 'text-white dark:text-neutral-800'
+            )}
+            onClick={() => setTheme(key)}
+          >
             {key === theme && (
               <motion.div
                 layoutId={layoutId || 'themeIdPointer'}
                 initial={false}
                 className={cn(
-                  'absolute inset-0 bg-blue-500',
+                  'absolute inset-0 bg-neutral-900 dark:bg-white',
                   i === 0 && 'rounded-l-sm',
                   i === self.length - 1 && 'rounded-r-sm'
                 )}
