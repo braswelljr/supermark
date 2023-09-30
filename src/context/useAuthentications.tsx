@@ -19,6 +19,7 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
   const [user, setUser] = useState<UserI | undefined>(undefined)
 
   useEffect(() => {
+    setInitialLoading(true)
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange(async (event, session) => {
@@ -55,11 +56,11 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
           toast({ title: 'Authentication failed', description: error.message, variant: 'error' })
 
           console.error(error)
-        } finally {
-          setInitialLoading(false)
         }
       } else if (['USER_DELETED', 'SIGNED_OUT'].includes(event)) setUser(undefined)
     })
+
+    setInitialLoading(false)
 
     return () => subscription.unsubscribe()
   }, [toast])
