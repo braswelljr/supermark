@@ -4,6 +4,8 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import { ThemeProvider } from '~/providers/theme'
 import { siteConfig } from '~/config/site'
+import Footer from '~/components/shared/footer'
+import Navbar from '~/components/shared/navbar'
 import { Toaster } from '~/components/ui/toaster'
 import { AuthenticationProvider } from '~/context/useAuthentications'
 import { cn } from '~/utils/classNames'
@@ -70,9 +72,15 @@ export default function Layout({ children }: { children: ReactNode }): React.JSX
       suppressHydrationWarning
     >
       <head />
-      <body className="min-h-screen bg-white text-black dark:bg-neutral-900 dark:text-white">
+      <body className="h-full min-h-screen bg-white text-black dark:bg-neutral-900 dark:text-white">
         <ThemeProvider>
-          <AuthenticationProvider>{children}</AuthenticationProvider>
+          <AuthenticationProvider>
+            <Navbar />
+            <div className="flex h-full flex-1 flex-col  justify-between">
+              {children}
+              <Footer />
+            </div>
+          </AuthenticationProvider>
           <Toaster />
         </ThemeProvider>
       </body>

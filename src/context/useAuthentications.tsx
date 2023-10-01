@@ -221,6 +221,6 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
  * @example
  * const { user, setUser, register, login, logout, loading } = useAuthentication()
  */
-export function useAuthentication(): AuthenticationContextI {
+export default function useAuthentication(): AuthenticationContextI {
   return useContext(AuthenticationContext)
 }
