@@ -1,0 +1,40 @@
+@layer base {
+  .react-tel-input .country-list {
+    @apply z-[1] my-4 -ml-2 mr-0 min-h-[300px] !w-[300px] list-none overflow-y-scroll rounded-md bg-white p-0  shadow-md outline-none xs:w-[350px];
+
+    .dark & {
+      @apply !bg-neutral-900;
+    }
+
+    li {
+      @apply hover:!bg-primary-300 !px-2 !py-1.5 !text-sm !text-neutral-700 hover:!font-bold hover:!text-white;
+
+      .dark & {
+        @apply !text-neutral-300 hover:!bg-neutral-700 hover:!text-white;
+      }
+    }
+
+    > .highlight {
+      @apply !bg-primary-300 !font-bold !text-neutral-900;
+
+      .dark & {
+        @apply !bg-neutral-700 !text-white;
+      }
+    }
+  }
+
+  .react-tel-input .form-control {
+    @apply !border-primary-500 relative !z-0;
+    .dark & {
+      @apply !bg-neutral-900;
+    }
+  }
+
+  .react-tel-input .selected-flag {
+    @apply !border-primary-500 relative !z-[5];
+
+    .dark & {
+      @apply !bg-neutral-900;
+    }
+  }
+}

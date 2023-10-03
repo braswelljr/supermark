@@ -8,7 +8,7 @@ export const textAreaVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'border-primary-500 focus:border-primary-600 focus:ring-primary-600',
+        default: 'border-neutral-500 focus:border-neutral-600 focus:ring-neutral-600',
         secondary: 'border-neutral-300 focus:border-neutral-200 focus:ring-neutral-200',
         error: 'border-red-500 focus:border-red-500 focus:ring-red-500'
       },
@@ -19,7 +19,7 @@ export const textAreaVariants = cva(
       },
 
       defaultVariant: {
-        variant: 'primary',
+        variant: 'default',
         Size: 'md'
       }
     }
@@ -33,7 +33,7 @@ export interface TextAreaProps
 }
 
 export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ className, variant = 'primary', Size = 'md', asChild = false, ...props }, ref) => {
+  ({ className, variant = 'default', Size = 'md', asChild = false, ...props }, ref) => {
     const Component = asChild ? Slot : 'textarea'
     return <Component className={cn(textAreaVariants({ variant, Size, className }))} ref={ref} {...props} />
   }

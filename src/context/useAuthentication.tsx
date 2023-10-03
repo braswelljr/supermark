@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import { AuthError, PostgrestError } from '@supabase/supabase-js'
 import supabase from '~/supabase'
 import { useToast } from '~/components/ui/toaster'
@@ -14,6 +15,8 @@ export const AuthenticationContext = createContext<AuthenticationContextI>({
 })
 
 export function AuthenticationProvider({ children }: AuthenticationProviderProps) {
+  const router = useRouter()
+  const pathname = usePathname()
   const { toast } = useToast()
   const [initialLoading, setInitialLoading] = useState(true)
   const [user, setUser] = useState<UserI | undefined>(undefined)
@@ -40,12 +43,13 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
           // throw error to catch block
           if (e) throw new Error(e.message, { cause: { e } })
 
-          if (data) setUser(data)
-          else
+          if (data) {
+            setUser(data)
+            if (user && user.roles.includes('admin')) router.push('/dashboard')
+            else router.push('/login')
+          } else
             throw new Error('user not logged in', {
-              cause: {
-                error: { message: 'data not found', code: 'not found' }
-              }
+              cause: { error: { message: 'data not found', code: 'not found' } }
             })
         } catch (err) {
           const error =
@@ -57,13 +61,16 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
 
           console.error(error)
         }
-      } else if (['USER_DELETED', 'SIGNED_OUT'].includes(event)) setUser(undefined)
+      } else if (['USER_DELETED', 'SIGNED_OUT'].includes(event) && pathname.startsWith('/dashboard')) {
+        setUser(undefined)
+        router.push('/login')
+      }
     })
 
     setInitialLoading(false)
 
     return () => subscription.unsubscribe()
-  }, [toast])
+  }, [pathname, router, toast, user])
 
   /**
    * signIn - Signs in a user
@@ -97,13 +104,15 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
         if (error) throw new Error(error.message, { cause: { error } })
 
         // check if data exists
-        if (!data)
+        if (!data) {
           throw new Error('user not logged in', {
             cause: { error: { message: 'data not found', code: 'not found' } }
           })
+        }
 
         setUser(data)
         toast({ title: 'Authentication successful', description: 'Sign in successful', variant: 'success' })
+        router.push('/dashboard')
       } catch (err) {
         const error =
           err instanceof Error
@@ -115,7 +124,7 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
         console.error(error)
       }
     },
-    [toast]
+    [router, toast]
   )
 
   /**
@@ -137,7 +146,7 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
 
         // check if user exists
         if (!u || !ses) {
-          throw new Error('user not logged in', {
+          throw new Error('authentication failed', {
             cause: { error: { message: 'authentication failed', code: 'authentication failed' } }
           })
         }
@@ -149,7 +158,7 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
             ...params,
             id: u.id,
             avatar: '',
-            roles: ['user'],
+            roles: ['user', 'admin'],
             createdAt: new Date(),
             updatedAt: new Date()
           })
@@ -159,13 +168,15 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
         if (error) throw new Error(error.message, { cause: { error } })
 
         // check if data exists
-        if (!data)
+        if (!data) {
           throw new Error('user not logged in', {
             cause: { error: { message: 'data not found', code: 'not found' } }
           })
+        }
 
-        setUser(data)
+        // setUser(data)
         toast({ title: 'Authentication successful', description: 'Sign up successful', variant: 'success' })
+        router.push('/dashboard')
       } catch (err) {
         const error =
           err instanceof Error
@@ -177,7 +188,7 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
         console.error(error)
       }
     },
-    [toast]
+    [router, toast]
   )
 
   /**
@@ -194,6 +205,7 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
 
       setUser(undefined)
       toast({ title: 'Authentication successful', description: 'Sign out successful', variant: 'success' })
+      router.push('/login')
     } catch (err) {
       const error =
         err instanceof Error
@@ -204,7 +216,7 @@ export function AuthenticationProvider({ children }: AuthenticationProviderProps
 
       console.error(error)
     }
-  }, [toast])
+  }, [router, toast])
 
   const memoizedValue = useMemo(() => ({ user, signIn, signUp, logout }), [user, signIn, signUp, logout])
   return (

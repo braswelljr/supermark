@@ -19,14 +19,14 @@ import {
   DropdownMenuTrigger
 } from '~/components/ui/dropdown-menu'
 import { ThemeSwitch } from '~/components/ui/theme-switch'
-import useAuthentication from '~/context/useAuthentications'
+import useAuthentication from '~/context/useAuthentication'
 import { cn } from '~/utils/classNames'
 
 export default function Navbar({ className }: { className?: string }) {
   const { user, logout } = useAuthentication()
   const pathname = usePathname()
 
-  if ([`/login`, `/register`].includes(pathname)) return null
+  if ([`/login`, `/register`, '/'].includes(pathname) || pathname.startsWith('/dashboard')) return null
 
   return (
     <>

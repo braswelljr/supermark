@@ -5,7 +5,7 @@ export type AuthenticationContextI = {
   logout: () => Promise<void>
 }
 
-export type Roles = 'admin' | 'user'
+export type Roles = 'admin' | 'moderator' | 'user'
 
 export type UserI = {
   id: string
@@ -22,7 +22,6 @@ export type UserRequestI = {
   name: string
   email: string
   phone: string
-  dateOfBirth: Date
   avatar?: File
   password: string
 }
